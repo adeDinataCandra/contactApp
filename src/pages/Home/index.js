@@ -11,11 +11,14 @@ import {
   Pressable
 } from 'react-native';
 import Axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Home = ({navigation}) => {
   const [contacts, setContacts] = useState([]);
   const [contact, setContact] = useState({});
    const [modalVisible, setModalVisible] = useState(false);
+   const dispatch = useDispatch();
+   const getContactReducer = useSelector(state => state);
 
   const getAllContacts = () => {
     Axios.get('https://simple-contact-crud.herokuapp.com/contact').then(res => {
@@ -59,11 +62,23 @@ const Home = ({navigation}) => {
   };
 
   const getContact = (id) => {
+  
     Axios.get(`https://simple-contact-crud.herokuapp.com/contact/${id}`)
     .then(res => {
       console.log(res.data.data);
       setContact(res.data.data);
       setModalVisible(true)
+      console.log('getContact Reducer:', getContactReducer);
+    }).catch(err => {
+      console.log(err.message);
+    })
+  }
+
+  const updateContact = (id) => {
+    Axios.get(`https://simple-contact-crud.herokuapp.com/contact/${id}`)
+    .then(res => {
+      dispatch({type: 'GET_CONTACT', value: res.data.data})
+      navigation.navigate('Update');
     }).catch(err => {
       console.log(err.message);
     })
@@ -113,7 +128,7 @@ const Home = ({navigation}) => {
                 <Text style={{fontSize: 10}}>{contact.age} thn</Text>
               </View>
               <TouchableOpacity
-                onPress={() => navigation.navigate('Update', contact)}>
+                onPress={() => updateContact(contact.id)}>
                 <Text style={styles.update}>Update</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => deleteContact(contact.id)}>

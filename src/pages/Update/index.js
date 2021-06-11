@@ -4,19 +4,21 @@ import {InputTextComponent} from '../../components';
 import ImagePicker from 'react-native-image-picker';
 import {useForm} from '../../utils';
 import Axios from 'axios';
+import {useSelector} from 'react-redux';
 
-const Update = ({navigation, route}) => {
-    const data = route.params;
+const Update = ({navigation}) => {
+    const contact = useSelector(state => state.getContact);
     const [imageUpload, setImageUpload] = useState('');
     const [form, setForm] = useForm({
-        firstName: data.firstName,
-        lastName: data.lastName,
-        age: data.age,
-        photo: data.photo
+       firstName: contact.firstName,
+       lastName: contact.lastName,
+       age: contact.age,
+       photo: contact.photo
     });
 
     useEffect(() => {
         console.log(form);
+        console.log(contact);
     })
 
     const getImage = () => {
@@ -36,11 +38,14 @@ const Update = ({navigation, route}) => {
     }
 
     const update = () => {
-        Axios.put(`https://simple-contact-crud.herokuapp.com/contact/${data.id}`, form)
+        console.log(form);
+        Axios.put(`https://simple-contact-crud.herokuapp.com/contact/${contact.id}`, form)
         .then(res => {
             setForm('reset');
             console.log(res);
             navigation.replace('Home');
+        }).catch(err => {
+            console.log(err.message);
         })
     }
     return (

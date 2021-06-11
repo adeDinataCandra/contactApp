@@ -1,4 +1,4 @@
-package com.contactapp;
+package com.candra.contactapp;
 
 import com.facebook.react.ReactActivity;
 

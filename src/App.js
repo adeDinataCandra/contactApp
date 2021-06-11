@@ -1,11 +1,10 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import store from './utils/redux/store';
-import {Provider, useSelector} from 'react-redux';
+import {StyleSheet} from 'react-native';
 import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import Router from './router';
-import {Home} from './pages';
+import Store from './redux/store';
+import {Provider} from 'react-redux';
 
 const MainApp = () => {
   return (
@@ -16,8 +15,8 @@ const MainApp = () => {
 }
 const App = () => {
   return (
-    <Provider store={store}>
-      <MainApp />
+    <Provider store={Store}>
+         <MainApp />
     </Provider>
   );
 }
